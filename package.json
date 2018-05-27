@@ -4,6 +4,8 @@
     "build": "backpack build"
   },
   "devDependencies": {
-    "backpack-core": "^0.7.0"
+    "babel-preset-flow": "^6.23.0",
+    "backpack-core": "^0.7.0",
+    "flow-bin": "^0.73.0"
   }
 }
