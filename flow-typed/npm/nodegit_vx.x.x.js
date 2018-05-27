@@ -44,6 +44,9 @@ declare module 'nodegit' {
   declare type TreeEntry = {
     name: () => string
   }
+
+  declare type Entry = {
+  }
 }
 /**
  * We include stubs for each file inside this npm package in case you need to
