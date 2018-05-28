@@ -18,7 +18,12 @@ declare module 'nodegit' {
 
   declare type GitExport = {
     Repository: typeof Repository,
-    Clone: typeof Clone.clone
+    Clone: typeof Clone.clone,
+    Commit: typeof Commit,
+    Tree: typeof Tree,
+    TreeEntry: typeof TreeEntry,
+    Entry: typeof Entry,
+    Blob: typeof Blob
   }
 
   declare class Repository {
@@ -30,22 +35,27 @@ declare module 'nodegit' {
     static clone: (url : string, local_path: string) => Promise<Repository>
   }
 
-  declare type Commit = {
+  declare class Commit {
     repo: Repository,
     getEntry: (string) => Promise<Entry>,
     getTree: () => Promise<Tree>
   }
 
-  declare type Tree = {
+  declare class Tree {
     repo: Repository,
     entries: () => TreeEntry[]
   }
 
-  declare type TreeEntry = {
-    name: () => string
+  declare class TreeEntry {
+    name: () => string,
+    getBlob: () => Blob
   }
 
-  declare type Entry = {
+  declare class Blob {
+    toString: () => string
+  }
+
+  declare class Entry {
   }
 }
 /**

@@ -1,8 +1,7 @@
 // @flow
 
-import {
-  getRepository
-} from './repo'
+import * as repo from './repo'
+import * as commit from './commit'
 
 import type { GitHubRepository } from './repo'
 
@@ -11,9 +10,8 @@ const awesome : GitHubRepository = {
   name: 'awesome'
 }
 
-getRepository(awesome)
+repo.getRepository(awesome)
   .then(repo => repo.getHeadCommit())
-  .then(commit => commit.getTree())
-  .then(tree => tree.entries().map(e => e.name()))
+  .then(commit.getReadme)
   .then(console.log)
   .catch(console.error)
