@@ -4,6 +4,9 @@ import MarkdownIt from 'markdown-it'
 
 import type Token from 'markdown-it/lib/token'
 
+type ListMap = { [string]: BulletList }
+
+const TOKEN_HEADING_OPEN = 'heading_open'
 const TOKEN_BULLET_LIST_OPEN = 'bullet_list_open'
 const TOKEN_BULLET_LIST_CLOSE = 'bullet_list_close'
 const TOKEN_LIST_ITEM_OPEN = 'list_item_open'
@@ -25,14 +28,23 @@ export function getLists (tokens: Token[]) {
   return getBulletLists(new Tokens(tokens))
 }
 
-export function getBulletLists (tokens : Tokens) : BulletList[] {
-  const lists : BulletList[] = []
+export function getBulletLists (tokens : Tokens) : ListMap {
+  const lists : ListMap = {}
+  let currentHeading = ''
 
   while (tokens.length) {
     const token = tokens.consume()
 
-    if (token.type === TOKEN_BULLET_LIST_OPEN) {
-      lists.push(consumeBulletList(tokens))
+    if (token.type === TOKEN_HEADING_OPEN) {
+      const inlineToken = tokens.consume()
+
+      if (inlineToken.type !== TOKEN_INLINE) {
+        throw new Error('Heading open token isn\'t proceded by inline')
+      }
+
+      currentHeading = inlineToken.content
+    } else if (token.type === TOKEN_BULLET_LIST_OPEN) {
+      lists[currentHeading] = consumeBulletList(tokens)
     }
   }
 
