@@ -1,13 +1,9 @@
-// @flow
+export function getCategories (rawMarkdown) {
+  const categories = {}
 
-type CategoryMap = { [string]: Category }
-
-export function getCategories (rawMarkdown : string) : CategoryMap {
-  const categories : CategoryMap = {}
-
-  const lines : string[] = rawMarkdown.split('\n')
-  let currentHeading : string = ''
-  let links : Link[] = []
+  const lines = rawMarkdown.split('\n')
+  let currentHeading = ''
+  let links = []
 
   while (lines.length) {
     const currentLine = lines.shift()
@@ -52,45 +48,45 @@ export function getCategories (rawMarkdown : string) : CategoryMap {
  */
 const listItemRegex = /^\s*-\s+\[(.*)\]\((.*)\)(.+)?$/
 
-function isHeading (line: string) : boolean {
+function isHeading (line) {
   return line.trim().startsWith('#')
 }
 
-function isListItem (line: string) : boolean {
+function isListItem (line) {
   return listItemRegex.test(line)
 }
 
-function isNested (line: string) : boolean {
+function isNested (line) {
   return /^\s+/.test(line)
 }
 
-function getHeadingTitle (line : string) : string {
+function getHeadingTitle (line) {
   const match = /#+\s+(.*)/.exec(line)
   return match[1]
 }
 
-function getListItemLink (line : string) : Link {
+function getListItemLink (line) {
   const [_, label, link, description] = listItemRegex.exec(line)
   return new Link(label, link, description)
 }
 
 class Category {
-  name : string = ''
-  links : Link[] = []
+  name = ''
+  links = []
 
-  constructor (name: string, children) {
+  constructor (name, children) {
     this.name = name
     this.links = children
   }
 }
 
 class Link {
-  label : string = ''
-  url : string = ''
-  description : string = ''
-  children : Link[] = []
+  label = ''
+  url = ''
+  description = ''
+  children = []
 
-  constructor (label: string, url: string, description: string) {
+  constructor (label, url, description) {
     this.label = label
     this.url = url
     /*

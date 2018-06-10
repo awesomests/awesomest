@@ -1,12 +1,8 @@
-// @flow
-
 import * as repo from './repo'
 import * as commit from './commit'
 import * as markdown from './markdown'
 
-import type { GitHubRepository } from './repo'
-
-const awesome : GitHubRepository = {
+const awesome = {
   user: 'sindresorhus',
   name: 'awesome'
 }

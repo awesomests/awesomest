@@ -1,9 +1,7 @@
-// @flow
-
 import fs from 'fs'
 import { resolve } from 'path'
 
-export function ensureFolderExists (path : string) : Promise<void> {
+export function ensureFolderExists (path) {
   if (folderExists(path)) {
     return Promise.resolve()
   }
@@ -11,11 +9,11 @@ export function ensureFolderExists (path : string) : Promise<void> {
   return mkdir(path)
 }
 
-export function folderExists (path: string) : boolean {
+export function folderExists (path) {
   return fs.existsSync(path)
 }
 
-export function mkdir (path: string) : Promise<void> {
+export function mkdir (path) {
   return new Promise((resolve, reject) => {
     fs.mkdir(path, 0o777, err => {
       if (err) reject(err)
@@ -24,6 +22,6 @@ export function mkdir (path: string) : Promise<void> {
   })
 }
 
-export function parentPath(path : string) : string {
+export function parentPath (path) {
   return resolve(path, '../')
 }

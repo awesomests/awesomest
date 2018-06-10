@@ -1,8 +1,4 @@
-// @flow
-
-import type Git from 'nodegit'
-
-export async function getReadme (commit: Git.Commit) : Promise<string> {
+export async function getReadme (commit) {
   const tree = await commit.getTree()
   const entries = tree.entries()
   const re = /readme(.md)?/i
