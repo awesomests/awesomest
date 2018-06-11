@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { resolve } from 'path'
+import { resolve as pathResolve } from 'path'
 
 export function ensureFolderExists (path) {
   if (folderExists(path)) {
@@ -24,4 +24,8 @@ export function mkdir (path) {
 
 export function parentPath (path) {
   return resolve(path, '../')
+}
+
+export function resolve (...paths) {
+  return pathResolve(...paths)
 }
