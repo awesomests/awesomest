@@ -1,4 +1,4 @@
-import git from 'nodegit'
+import Git from 'nodegit'
 import { resolve } from 'path'
 import {
   ensureFolderExists,
@@ -6,21 +6,32 @@ import {
   parentPath
 } from './fs'
 
-export function getRepository (repo) {
-  const folder = repoFolder(repo)
+export function getRepository (repoId) {
+  const folder = repoFolder(repoId)
 
   return ensureFolderExists(parentPath(folder))
     .then(() =>
+      // TODO: check if folder is not a repo with only a .git folder
       folderExists(folder)
-        ? git.Repository.open(folder)
-        : git.Clone(repoUrl(repo), folder)
+        ? Git.Repository.open(folder)
+        : Git.Clone(repoUrl(repoId), folder)
     )
 }
 
-export function repoFolder ({ user, name }) {
-  return resolve(parentPath(__dirname), 'repos', user, name)
+export function getAllCommits (repo) {
+  return repo.getMasterCommit()
+    .then(commit => new Promise((resolve, reject) => {
+      const history = commit.history(Git.Revwalk.SORT.REVERSE)
+      history.on('end', resolve)
+      history.on('error', reject)
+      history.start()
+    }))
 }
 
-export function repoUrl ({ user, name }) {
-  return `https://github.com/${user}/${name}`
+export function repoFolder ({ owner, name }) {
+  return resolve(parentPath(__dirname), 'repos', owner, name)
+}
+
+export function repoUrl ({ owner, name }) {
+  return `https://github.com/${owner}/${name}`
 }

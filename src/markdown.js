@@ -1,9 +1,20 @@
+import * as utils from './utils'
+import Category from './models/Category'
+import List from './models/List'
+
 export function getCategories (rawMarkdown) {
   const categories = {}
 
   const lines = rawMarkdown.split('\n')
   let currentHeading = ''
-  let links = []
+  
+  // Sometimes nested lists have titles that doesn't describe it all. Example:
+  // - Linux
+  //   - Containers*
+  // * Title becomes "Linux - Containers"
+  let lastUnnestedList
+  
+  let lists = []
 
   while (lines.length) {
     const currentLine = lines.shift()
@@ -11,22 +22,40 @@ export function getCategories (rawMarkdown) {
     if (
       (isHeading(currentLine) || !lines.length) && 
       currentHeading !== '' &&
-      links.length
+      lists.length
     ) {
-      categories[currentHeading] = new Category(currentHeading, links)
+      const category = categories[currentHeading] = new Category(currentHeading)
+
+      category.lists = lists.map(list => {
+        list.category = category
+        return list
+      })
+
       currentHeading = ''
-      links = []
+      lastUnnestedList = null
+      lists = []
     }
 
     if (isHeading(currentLine)) {
       currentHeading = getHeadingTitle(currentLine)
     } else if (isListItem(currentLine)) {
-      if (isNested(currentLine) && links.length) {
-        const lastUnnestedLink = links[links.length - 1]
-        lastUnnestedLink.children.push(getListItemLink(currentLine))
-      } else {
-        links.push(getListItemLink(currentLine))
+      const link = parseListItemLink(currentLine)
+
+      if (!utils.parseRepoUrl(link.url)) { // Table of Contents have relative URLs like "#big-data"
+        continue
       }
+
+      const [, owner, name] = utils.parseRepoUrl(link.url)
+
+      const list = new List(owner, name, link.label, link.description)
+
+      if (isNested(currentLine) && lastUnnestedList) {
+        list.label = `${lastUnnestedList.title} - ${list.title}`
+      } else {
+        lastUnnestedList = list
+      }
+
+      lists.push(list)
     }
   }
 
@@ -46,7 +75,7 @@ export function getCategories (rawMarkdown) {
  *    Nested:
  *      `	- [Browser Extensions](https://github.com/stefanbuck/awesome-browser-extensions-for-github)`
  */
-const listItemRegex = /^\s*-\s+\[(.*)\]\((.*)\)(.+)?$/
+const listItemRegex = /^\s*-\s+\[(.*)\]\((.*)\)\s*(-)?\s*(.+)?$/
 
 function isHeading (line) {
   return line.trim().startsWith('#')
@@ -61,40 +90,16 @@ function isNested (line) {
 }
 
 function getHeadingTitle (line) {
-  const match = /#+\s+(.*)/.exec(line)
+  const match = /#+\s*(.*)/.exec(line)
+
+  if (!match) {
+    throw new Error('Failed to match heading')
+  }
+
   return match[1]
 }
 
-function getListItemLink (line) {
-  const [_, label, link, description] = listItemRegex.exec(line)
-  return new Link(label, link, description)
-}
-
-class Category {
-  name = ''
-  links = []
-
-  constructor (name, children) {
-    this.name = name
-    this.links = children
-  }
-}
-
-class Link {
-  label = ''
-  url = ''
-  description = ''
-  children = []
-
-  constructor (label, url, description) {
-    this.label = label
-    this.url = url
-    /*
-     * In awesome lists we often see this format:
-     *    `- [Label](Link) - Description`
-     * The token for description comes with ` - Description` (if present at all).
-     * So I just remove ` - ` at the start.
-     */
-    this.description = description ? description.replace(/^(\s*-\s*)/, '') : ''
-  }
+function parseListItemLink (line) {
+  const [_, label, url, _slash,  description] = listItemRegex.exec(line)
+  return { label, url, description: description && description.trim() }
 }

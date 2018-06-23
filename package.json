@@ -7,6 +7,7 @@
     "backpack-core": "^0.7.0"
   },
   "dependencies": {
+    "gauge": "^2.7.4",
     "nodegit": "^0.22.0",
     "sqlite": "^2.9.2"
   }
