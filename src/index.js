@@ -8,29 +8,6 @@ import List from './models/List'
 
 const APROXIMATE_SQLITE_VAR_MAX = 500
 
-// const awesome = {
-//   user: 'sindresorhus',
-//   name: 'awesome'
-// }
-
-// const awesome = {
-//   user: 'lubien',
-//   name: 'popura'
-// }
-
-// repositories.getRepository(awesome)
-//   .then(repositories.getAllCommits)
-//   .then(async commits =>
-//     Promise.all(
-//       commits.map(commit.getCommitData)
-//     )
-//   )
-//   .then(commits => {
-//     return commits
-//   })
-//   // .then(console.log)
-//   .catch(console.error)
-
 const listBlacklist = [
   'awesome-macos-command-line',
   'Awesome-Swift-Education',
@@ -67,23 +44,6 @@ async function main () {
   await insertCategoriesOnDb(db, categories)
   await insertListsOnDb(db, lists)
 
-
-  // START: Hack. This hack is for dev only:
-  // const testingCategory = 'Programming Languages'
-  // const testingList = 'JavaScript'
-  // for (let [categoryKey, category] of Object.entries(categories)) {
-  //   if (categoryKey === testingCategory) {
-  //     category.lists = category.lists.filter(l => l.title ===testingList)
-  //   } else {
-  //     delete categories[categoryKey]
-  //   }
-  // }
-  // END: Hack
-
-  // for (let category of Object.values(categories)) {
-    
-  // }
-
   const results = []
   const batchTime = 0
   const batchSize = 50
@@ -102,15 +62,6 @@ async function main () {
   const urls = utils.flatten(results)
 
   console.timeEnd(urlsTimerLabel)
-
-
-  // Hack:
-  // const js = categories[testingCategory].lists[0]
-
-  // Hack:
-  // require('fs').writeFileSync('bar.json', JSON.stringify(categories, undefined, 2), 'utf-8')
-
-  categories
 }
 
 async function insertCategoriesOnDb (db, categories) {
@@ -140,43 +91,6 @@ async function insertListsOnDb (db, lists) {
 }
 
 async function insertLinksOnDb (db, list, links) {
-  // console.log('hehe', list.name)
-  // return Promise.all(
-  //   links.map(link => {
-  //     const { list, commit, diff, url } = link
-
-  //     const userP = db.run(`
-  //       insert or ignore into User (name, email)
-  //       values (?, ?)
-  //     `, [commit.author.name, commit.author.email])
-
-  //     userP.then(() => {
-  //       return db.run(`
-  //         insert into GitCommit (sha, userId, listOwner, listName, summary, message, createdAt)
-  //         values (?, (select id from User where email = ?), ?, ?, ?, ?, ?)
-  //       `, [
-  //         commit.sha,
-  //         commit.author.email,
-  //         list.owner,
-  //         list.name,
-  //         commit.summary,
-  //         commit.message,
-  //         commit.date
-  //       ])
-  //     })
-
-  //     const linkP = db.run(`
-  //       insert or ignore into Link (url)
-  //       values (?)
-  //     `, [link.url])
-
-  //     return Promise.all([userP, linkP]).then(data => {
-  //       console.log('hehe', list.name)
-  //       return data
-  //     })
-  //   })
-  // ).catch(console.error)
-
   const commits = Array.from(new Map(
     links.map(link =>
       [link.commit.sha, link.commit]
@@ -197,15 +111,6 @@ async function insertLinksOnDb (db, list, links) {
       [link.url, link]
     )
   ).values())
-
-  // await Promise.all(
-  //   uniqueUrls.map(link =>
-  //     db.run(`
-  //       insert or ignore into Link (url)
-  //       values (?)
-  //     `, [link.url])
-  //   )
-  // )
 
   const chunkSize = Math.floor(APROXIMATE_SQLITE_VAR_MAX / 1) // Too many SQL variables crash SQLite
   const chunks = utils.chunksOf(uniqueUrls, chunkSize)
@@ -268,14 +173,6 @@ async function insertLinksOnDb (db, list, links) {
 }
 
 async function insertUsersOnDb (db, users) {
-  // await Promise.all(
-  //   users.map(user =>
-  //     db.run(`
-  //       insert or ignore into User (name, email)
-  //       values (?, ?)
-  //     `, [user.name, user.email])
-  //   )
-  // )
   const chunkSize = Math.floor(APROXIMATE_SQLITE_VAR_MAX / 2) // Too many SQL variables crash SQLite
   const chunks = utils.chunksOf(users, chunkSize)
   
@@ -305,22 +202,6 @@ async function insertUsersOnDb (db, users) {
 }
 
 async function insertCommitsOnDb (db, list, commits, userIdByEmail) {
-  // await Promise.all(
-  //   commits.map(commit =>
-  //     db.run(`
-  //       insert into GitCommit (sha, userId, listOwner, listName, summary, message, createdAt)
-  //       values (?, ?, ?, ?, ?, ?, ?)
-  //     `, [
-  //       commit.sha,
-  //       userIdByEmail.get(commit.author.email),
-  //       list.owner,
-  //       list.name,
-  //       commit.summary,
-  //       commit.message,
-  //       commit.date
-  //     ])
-  //   )
-  // )
   const chunkSize = Math.floor(APROXIMATE_SQLITE_VAR_MAX / 7) // Too many SQL variables crash SQLite
   const chunks = utils.chunksOf(commits, chunkSize)
   
@@ -387,36 +268,10 @@ async function getListLinks (list) {
   return links
 }
 
-main()
-
-// repositories.getRepository(awesome)
-//   .then(repo => {
-//     return Promise.all([
-//       repo.getHeadCommit()
-//         .then(commit.getReadme)
-//         .then(markdown.getCategories),
-//       repositories.getAllCommits(repo)
-//         .then(commits => Promise.all(commits.map(commit.getCommitData)))
-//     ])
-//   })
-//   .then(([categories, commits]) => {
-//     const awesome = new List('sindresorhus', 'awesome')
-//     awesome.categories = categories
-//     console.log(categories)
-//   })
-  // .catch(console.error)
-
-// repositories.getRepository(awesome)
-//   .then(repo => repo.getHeadCommit())
-//   .then(commit.getReadme)
-//   .then(markdown.getCategories)
-//   .then(t => {
-//     console.log(t)
-//   })
-//   .catch(console.error)
-
 function getAwesomeCategories (awesomeRepo) {
   return awesomeRepo.getHeadCommit()
     .then(git.getReadme)
     .then(markdown.getCategories)
 }
+
+main()
