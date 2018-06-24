@@ -144,7 +144,8 @@ async function insertLinksOnDb (db, list, links) {
     // '+' is new link
     // '-' means the link was removed
     // If link appears more than once, use the lastest
-    links.map(({ url, line }) => [url, line.origin === '+'])
+    links
+      .map(({ url, line }) => [url, line.origin === '+' || line.origin === ' '])
   )
 
   const listLinkChunkSize = Math.floor(APROXIMATE_SQLITE_VAR_MAX / 6) // Too many SQL variables crash SQLite
