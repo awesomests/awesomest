@@ -252,6 +252,11 @@ async function getListLinks (list) {
   const links = []
 
   for (let commit of commits) {
+    if (commit.isMergeCommit) {
+      // Ignore duplicated diffs
+      continue
+    }
+
     for (let diff of commit.diffs) {
       if (!utils.seemsLikeReadme(diff.name)) {
         continue
