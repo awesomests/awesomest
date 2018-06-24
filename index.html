@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Awesomest</title>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/headjs/1.0.3/head.core.min.js"></script>
   </head>
 
   <body>
@@ -18,11 +19,181 @@
           </ul>
         </section>
         
+        <section>
+          <h2>Introdução às Awesome Lists</h2>
+        </section>
+
+        <section>
+          <img src="app/images/flow/flow.png" alt="Flow">
+        </section>
+
+        <section>
+          <img src="app/images/flow/1.png" alt="Flow">
+        </section>
+
+        <section>
+          <img src="app/images/flow/2.png" alt="Flow">
+        </section>
+
+        <section>
+          <img src="app/images/flow/3.png" alt="Flow">
+        </section>
+
+        <section>
+          <img src="app/images/flow/5.png" alt="Flow">
+        </section>
+
+        <section>
+          <img src="app/images/flow/6.png" alt="Flow">
+        </section>
+
+        <section>
+          <img src="app/images/flow/7.png" alt="Flow">
+        </section>
+
+        <section>
+          <img src="app/images/flow/8.png" alt="Flow">
+        </section>
+
+        <section>
+          <img src="app/images/flow/9.png" alt="Flow">
+        </section>
+
+        <section>
+          <img src="app/images/flow/10.png" alt="Flow">
+        </section>
+
+        <section>
+          <h2>Ferramentas</h2>
+        </section>
+        
+        <section>
+          <img src="app/images/tools/node.png" alt="Node">
+        </section>
+        
+        <section>
+          <img src="app/images/tools/nodegit.svg" width=400 alt="NodeGit">
+        </section>
+        
+        <section>
+          <img src="app/images/tools/sqlite.png" alt="SQLite">
+        </section>
+        
+        <section>
+          <h2>Reveal.js</h2>
+        </section>
+        
+        <section>
+          <img src="app/images/tools/highcharts.png" alt="Highcharts">
+        </section>
+
+        <section>
+          <h2>Modelo do Banco</h2>
+        </section>
+        
+        <section>
+            <pre><code class="hljs">
+                create table if not exists Category (
+                  id integer primary key AUTOINCREMENT,
+                  name varchar(255) not null unique  
+                );
+            </code></pre>
+        </section>
+
+        <section>
+            <pre><code class="hljs">
+                create table if not exists Link (
+                  id integer primary key AUTOINCREMENT,
+                  label varchar(255) null,
+                  url text not null unique,
+                  description text null
+                );
+            </code></pre>
+        </section>
+
+        <section>
+            <pre><code class="hljs">
+                create table if not exists User (
+                  id integer primary key AUTOINCREMENT,
+                  email varchar(255) not null unique,
+                  name varchar(255) not null
+                );
+            </code></pre>
+        </section>
+
+        <section>
+            <pre><code class="hljs">
+                create table if not exists List (
+                  owner varchar(255) not null,
+                  name varchar(255) not null,
+                  categoryId varchar(255) not null,
+                  primary key (owner, name),
+
+                  foreign key (categoryId) references Category (id)
+                    on update cascade on delete cascade
+                );
+            </code></pre>
+        </section>
+
+        <section>
+            <pre><code class="hljs">
+                create table if not exists GitCommit (
+                  sha varchar(255) not null primary key,
+                  userId integer not null,
+                  listOwner varchar(255) not null,
+                  listName varchar(255) not null,
+                  summary text not null,
+                  message text,
+                  createdAt datetime,
+
+                  foreign key (userId) references User (id)
+                    on update cascade on delete cascade,
+
+                  foreign key (listOwner, listName) references List (owner, name)
+                    on update cascade on delete cascade
+                );
+            </code></pre>
+        </section>
+
+        <section>
+            <pre><code class="hljs">
+                create table if not exists ListLink (
+                  linkId integer not null,
+                  listOwner varchar(255) not null,
+                  listName varchar(255) not null,
+                  userId integer not null,
+                  commitSha varchar(255) not null,
+                  active boolean not null default true,
+                  primary key (linkId, listName, listOwner),
+
+                  foreign key (linkId) references Link (id) on update cascade on delete cascade,
+
+                  foreign key (listOwner, listName) references List (owner, name) on update cascade on delete cascade,
+
+                  foreign key (userId) references User (id) on update cascade on delete cascade,
+
+                  foreign key (commitSha) references GitCommit (sha) on update cascade on delete cascade
+                );
+            </code></pre>
+        </section>
+
+        <section>
+          <h2>ID e Email</h2>
+
+          <ul>
+            <li>Commits tem email</li>
+            <li>Listas tem nome de usuário</li>
+            <li>Pessoas podiam usar múltiplos emails</li>
+          </ul>
+        </section>
+
         <section id="exampleChart">
           <div id="exampleChart-container"></div>
         </section>
         
-        <section>Slide 2</section>
+        <section>
+          <h2>Fim</h2>
+        </section>
       </div>
     </div>
   <script type="text/javascript" src="bundle.js"></script></body>
