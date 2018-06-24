@@ -32,7 +32,7 @@ const listBlacklist = [
 
 
 export default async function generateDb () {
-  const db = await database.getDb()
+  const db = await database.getDb().then(database.migrate)
 
   const awesome = await repositories.getRepository({ owner: 'sindresorhus', name: 'awesome'})
   const categories = await getAwesomeCategories(awesome)
@@ -245,6 +245,10 @@ async function getListLinks (list) {
 
   for (let commit of commits) {
     for (let diff of commit.diffs) {
+      if (!utils.seemsLikeReadme(diff.name)) {
+        continue
+      }
+
       for (let line of diff.lines) {
         const { origin } = line
         const urls = utils.findAllUrls(line.content)

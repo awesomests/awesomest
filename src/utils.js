@@ -1,7 +1,7 @@
 import Gauge from 'gauge'
 
 export function seemsLikeReadme (fileName) {
-  return /readme\.md/i.test(fileName)
+  return /^readme/i.test(fileName)
 }
 
 export function flatten (xs) {
