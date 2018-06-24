@@ -1,18 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-
-const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: __dirname + '/app/index.html',
-  filename: 'index.html',
-  inject: 'body'
-});
-
-const ExtractTextPluginConfig = new ExtractTextPlugin('style.css');
-
-const entrypoint = process.env.npm_lifecycle_event === 'dev' ?
-  'webpack-dev-server/client?http://localhost:8080' :
-  './app/index.js';
 
 module.exports = {
   entry: './app/index.js',
@@ -41,6 +28,12 @@ module.exports = {
         use: [
           'style-loader',
           'css-loader'
+        ]
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
+        use: [
+          'file-loader'
         ]
       }
     ]
