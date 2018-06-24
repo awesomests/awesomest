@@ -3,7 +3,6 @@ import * as fs from './fs'
 
 const file = fs.resolve(fs.parentPath(__dirname), process.env.DB_FILE || 'database.sqlite')
 const prepareDb = sqlite.open(file, { Promise })
-  .then(migrate)
 
 export async function getDb ()  {
   return await prepareDb
