@@ -147,15 +147,15 @@ async function insertLinksOnDb (db, list, links) {
     links.map(({ url, line }) => [url, line.origin === '+'])
   )
 
-  const listLinkChunkSize = Math.floor(APROXIMATE_SQLITE_VAR_MAX / 5) // Too many SQL variables crash SQLite
+  const listLinkChunkSize = Math.floor(APROXIMATE_SQLITE_VAR_MAX / 6) // Too many SQL variables crash SQLite
   const listLinkChunks = utils.chunksOf(uniqueUrls, listLinkChunkSize)
   
   await Promise.all(
     listLinkChunks.map(chunk => {
-      const fields = Array(chunk.length).fill(`(?, ?, ?, ?, ?)`).join(', ')
+      const fields = Array(chunk.length).fill(`(?, ?, ?, ?, ?, ?)`).join(', ')
 
       const sql = `
-        insert or ignore into ListLink (linkId, listOwner, listName, userId, active)
+        insert or ignore into ListLink (linkId, listOwner, listName, userId, commitSha, active)
         values ${fields}
       `
       const variables = utils.flatten(chunk.map(({ url, commit }) => [
@@ -163,6 +163,7 @@ async function insertLinksOnDb (db, list, links) {
         list.owner,
         list.name,
         userIdByEmail.get(commit.author.email),
+        commit.sha,
         activeLinkByUrl.get(url)
       ]))
 
@@ -222,7 +223,7 @@ async function insertCommitsOnDb (db, list, commits, userIdByEmail) {
           list.name,
           commit.summary,
           commit.message,
-          commit.date
+          commit.date.toISOString().slice(0, 19).replace('T', ' ')
         ]
       ))
 

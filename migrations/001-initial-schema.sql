@@ -65,6 +65,7 @@ create table if not exists ListLink (
   listOwner varchar(255) not null,
   listName varchar(255) not null,
   userId integer not null,
+  commitSha varchar(255) not null,
   active boolean not null default true,
   primary key (linkId, listName, listOwner),
 
@@ -75,6 +76,9 @@ create table if not exists ListLink (
     on update cascade on delete cascade,
 
   foreign key (userId) references User (id)
+    on update cascade on delete cascade,
+
+  foreign key (commitSha) references GitCommit (sha)
     on update cascade on delete cascade
 );
 
