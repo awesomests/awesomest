@@ -107,11 +107,17 @@ async function insertLinksOnDb (db, list, links) {
   const userIdByEmail = await insertUsersOnDb (db, authors)
   await insertCommitsOnDb(db, list, commits, userIdByEmail)
 
-  const uniqueUrls = Array.from(new Map(
-    links.map(link =>
-      [link.url, link]
-    )
-  ).values())
+  // If I mapped the links like I've been doing before, that would make
+  // the last user related to the link the author.
+  const uniqueUrlsMap = new Map()
+
+  for (let link of links) {
+    if (!uniqueUrlsMap.get(link.url)) {
+      uniqueUrlsMap.set(link.url, link)
+    }
+  }
+
+  const uniqueUrls = Array.from(uniqueUrlsMap.values())
 
   const chunkSize = Math.floor(APROXIMATE_SQLITE_VAR_MAX / 1) // Too many SQL variables crash SQLite
   const chunks = utils.chunksOf(uniqueUrls, chunkSize)
