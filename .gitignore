@@ -3,5 +3,7 @@ build
 dist
 repos/*
 !repos/.gitkeep
+data/*
+!data/.gitkeep
 *.sqlite
 .vscode

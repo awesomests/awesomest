@@ -6,6 +6,7 @@ import query from './commands/query'
 program
   .option('-g, --generate-db', 'Generate DB')
   .option('-q, --query [name]', 'Query')
+  .option('-a, --all', 'Query all')
   .parse(process.argv)
 
 async function main () {
@@ -15,7 +16,7 @@ async function main () {
   }
 
   if (program.query) {
-    return query(program.query)
+    return query(program.query, program.all)
   }
 }
 
