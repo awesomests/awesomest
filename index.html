@@ -20,171 +20,177 @@
         </section>
         
         <section>
-          <h2>Introdução às Awesome Lists</h2>
+          <section>
+            <h2>Introdução às Awesome Lists</h2>
+          </section>
+  
+          <section>
+            <img src="app/images/flow/flow.png" alt="Flow">
+          </section>
+  
+          <section>
+            <img src="app/images/flow/1.png" alt="Flow">
+          </section>
+  
+          <section>
+            <img src="app/images/flow/2.png" alt="Flow">
+          </section>
+  
+          <section>
+            <img src="app/images/flow/3.png" alt="Flow">
+          </section>
+  
+          <section>
+            <img src="app/images/flow/5.png" alt="Flow">
+          </section>
+  
+          <section>
+            <img src="app/images/flow/6.png" alt="Flow">
+          </section>
+  
+          <section>
+            <img src="app/images/flow/7.png" alt="Flow">
+          </section>
+  
+          <section>
+            <img src="app/images/flow/8.png" alt="Flow">
+          </section>
+  
+          <section>
+            <img src="app/images/flow/9.png" alt="Flow">
+          </section>
+  
+          <section>
+            <img src="app/images/flow/10.png" alt="Flow">
+          </section>
         </section>
 
         <section>
-          <img src="app/images/flow/flow.png" alt="Flow">
+          <section>
+            <h2>Ferramentas</h2>
+          </section>
+          
+          <section>
+            <img src="app/images/tools/node.png" alt="Node">
+          </section>
+          
+          <section>
+            <img src="app/images/tools/nodegit.svg" width=400 alt="NodeGit">
+          </section>
+          
+          <section>
+            <img src="app/images/tools/sqlite.png" alt="SQLite">
+          </section>
+          
+          <section>
+            <h2>Reveal.js</h2>
+          </section>
+          
+          <section>
+            <img src="app/images/tools/highcharts.png" alt="Highcharts">
+          </section>
         </section>
 
         <section>
-          <img src="app/images/flow/1.png" alt="Flow">
-        </section>
-
-        <section>
-          <img src="app/images/flow/2.png" alt="Flow">
-        </section>
-
-        <section>
-          <img src="app/images/flow/3.png" alt="Flow">
-        </section>
-
-        <section>
-          <img src="app/images/flow/5.png" alt="Flow">
-        </section>
-
-        <section>
-          <img src="app/images/flow/6.png" alt="Flow">
-        </section>
-
-        <section>
-          <img src="app/images/flow/7.png" alt="Flow">
-        </section>
-
-        <section>
-          <img src="app/images/flow/8.png" alt="Flow">
-        </section>
-
-        <section>
-          <img src="app/images/flow/9.png" alt="Flow">
-        </section>
-
-        <section>
-          <img src="app/images/flow/10.png" alt="Flow">
-        </section>
-
-        <section>
-          <h2>Ferramentas</h2>
-        </section>
-        
-        <section>
-          <img src="app/images/tools/node.png" alt="Node">
-        </section>
-        
-        <section>
-          <img src="app/images/tools/nodegit.svg" width=400 alt="NodeGit">
-        </section>
-        
-        <section>
-          <img src="app/images/tools/sqlite.png" alt="SQLite">
-        </section>
-        
-        <section>
-          <h2>Reveal.js</h2>
-        </section>
-        
-        <section>
-          <img src="app/images/tools/highcharts.png" alt="Highcharts">
-        </section>
-
-        <section>
-          <h2>Modelo do Banco</h2>
-        </section>
-        
-        <section>
-            <pre><code class="hljs">
-                create table if not exists Category (
-                  id integer primary key AUTOINCREMENT,
-                  name varchar(255) not null unique  
-                );
-            </code></pre>
-        </section>
-
-        <section>
-            <pre><code class="hljs">
-                create table if not exists Link (
-                  id integer primary key AUTOINCREMENT,
-                  label varchar(255) null,
-                  url text not null unique,
-                  description text null
-                );
-            </code></pre>
-        </section>
-
-        <section>
-            <pre><code class="hljs">
-                create table if not exists User (
-                  id integer primary key AUTOINCREMENT,
-                  email varchar(255) not null unique,
-                  name varchar(255) not null
-                );
-            </code></pre>
-        </section>
-
-        <section>
-            <pre><code class="hljs">
-                create table if not exists List (
-                  owner varchar(255) not null,
-                  name varchar(255) not null,
-                  categoryId varchar(255) not null,
-                  primary key (owner, name),
-
-                  foreign key (categoryId) references Category (id)
-                    on update cascade on delete cascade
-                );
-            </code></pre>
-        </section>
-
-        <section>
-            <pre><code class="hljs">
-                create table if not exists GitCommit (
-                  sha varchar(255) not null primary key,
-                  userId integer not null,
-                  listOwner varchar(255) not null,
-                  listName varchar(255) not null,
-                  summary text not null,
-                  message text,
-                  createdAt datetime,
-
-                  foreign key (userId) references User (id)
-                    on update cascade on delete cascade,
-
-                  foreign key (listOwner, listName) references List (owner, name)
-                    on update cascade on delete cascade
-                );
-            </code></pre>
-        </section>
-
-        <section>
-            <pre><code class="hljs">
-                create table if not exists ListLink (
-                  linkId integer not null,
-                  listOwner varchar(255) not null,
-                  listName varchar(255) not null,
-                  userId integer not null,
-                  commitSha varchar(255) not null,
-                  active boolean not null default true,
-                  primary key (linkId, listName, listOwner),
-
-                  foreign key (linkId) references Link (id) on update cascade on delete cascade,
-
-                  foreign key (listOwner, listName) references List (owner, name) on update cascade on delete cascade,
-
-                  foreign key (userId) references User (id) on update cascade on delete cascade,
-
-                  foreign key (commitSha) references GitCommit (sha) on update cascade on delete cascade
-                );
-            </code></pre>
-        </section>
-
-        <section>
-          <h2>ID e Email</h2>
-
-          <ul>
-            <li>Commits tem email</li>
-            <li>Listas tem nome de usuário</li>
-            <li>Pessoas podiam usar múltiplos emails</li>
-          </ul>
+          <section>
+            <h2>Modelo do Banco</h2>
+          </section>
+          
+          <section>
+              <pre><code class="hljs">
+                  create table if not exists Category (
+                    id integer primary key AUTOINCREMENT,
+                    name varchar(255) not null unique  
+                  );
+              </code></pre>
+          </section>
+  
+          <section>
+              <pre><code class="hljs">
+                  create table if not exists Link (
+                    id integer primary key AUTOINCREMENT,
+                    label varchar(255) null,
+                    url text not null unique,
+                    description text null
+                  );
+              </code></pre>
+          </section>
+  
+          <section>
+              <pre><code class="hljs">
+                  create table if not exists User (
+                    id integer primary key AUTOINCREMENT,
+                    email varchar(255) not null unique,
+                    name varchar(255) not null
+                  );
+              </code></pre>
+          </section>
+  
+          <section>
+              <pre><code class="hljs">
+                  create table if not exists List (
+                    owner varchar(255) not null,
+                    name varchar(255) not null,
+                    categoryId varchar(255) not null,
+                    primary key (owner, name),
+  
+                    foreign key (categoryId) references Category (id)
+                      on update cascade on delete cascade
+                  );
+              </code></pre>
+          </section>
+  
+          <section>
+              <pre><code class="hljs">
+                  create table if not exists GitCommit (
+                    sha varchar(255) not null primary key,
+                    userId integer not null,
+                    listOwner varchar(255) not null,
+                    listName varchar(255) not null,
+                    summary text not null,
+                    message text,
+                    createdAt datetime,
+  
+                    foreign key (userId) references User (id)
+                      on update cascade on delete cascade,
+  
+                    foreign key (listOwner, listName) references List (owner, name)
+                      on update cascade on delete cascade
+                  );
+              </code></pre>
+          </section>
+  
+          <section>
+              <pre><code class="hljs">
+                  create table if not exists ListLink (
+                    linkId integer not null,
+                    listOwner varchar(255) not null,
+                    listName varchar(255) not null,
+                    userId integer not null,
+                    commitSha varchar(255) not null,
+                    active boolean not null default true,
+                    primary key (linkId, listName, listOwner),
+  
+                    foreign key (linkId) references Link (id) on update cascade on delete cascade,
+  
+                    foreign key (listOwner, listName) references List (owner, name) on update cascade on delete cascade,
+  
+                    foreign key (userId) references User (id) on update cascade on delete cascade,
+  
+                    foreign key (commitSha) references GitCommit (sha) on update cascade on delete cascade
+                  );
+              </code></pre>
+          </section>
+  
+          <section>
+            <h2>ID e Email</h2>
+  
+            <ul>
+              <li>Commits tem email</li>
+              <li>Listas tem nome de usuário</li>
+              <li>Pessoas podiam usar múltiplos emails</li>
+            </ul>
+          </section>
         </section>
 
         <section>
@@ -206,363 +212,375 @@
         </section>
 
         <section>
-          <h2>Sobre categorias</h2>
-        </section>        
-
-        <section id="linksByCategory">
-          <div id="linksByCategory-container"></div>
+          <section>
+            <h2>Sobre categorias</h2>
+          </section>        
+  
+          <section id="linksByCategory">
+            <div id="linksByCategory-container"></div>
+          </section>
+        
+          <section id="contributorsByCategory">
+            <div id="contributorsByCategory-container"></div>
+          </section>
         </section>
+
+        <section>
+          <section>
+            <h2>Sobre listas</h2>
+          </section>
       
-        <section id="contributorsByCategory">
-          <div id="contributorsByCategory-container"></div>
-        </section>
-
-        <section>
-          <h2>Sobre listas</h2>
-        </section>
+          <section>
+            <h2>Quantidade de colaboradores por lista</h2>
+  
+            <table style="width: 100%">
+              <thead>
+                <tr>
+                  <th>Contribuidores</th>
+                  <th># de Listas</th>
+                </tr>
+              </thead>
+  
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td data-var="contributorsByList.1"></td>
+                </tr>
+                
+                <tr>
+                  <td>2 ~ 10</td>
+                  <td data-var="contributorsByList.2 ~ 10"></td>
+                </tr>
     
-        <section>
-          <h2>Quantidade de colaboradores por lista</h2>
-
-          <table style="width: 100%">
-            <thead>
-              <tr>
-                <th>Contribuidores</th>
-                <th># de Listas</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td data-var="contributorsByList.1"></td>
-              </tr>
-              
-              <tr>
-                <td>2 ~ 10</td>
-                <td data-var="contributorsByList.2 ~ 10"></td>
-              </tr>
+                <tr>
+                  <td>11 ~ 50</td>
+                  <td data-var="contributorsByList.11 ~ 50"></td>
+                </tr>
+                
+                <tr>
+                  <td>51 ~ 100</td>
+                  <td data-var="contributorsByList.51 ~ 100"></td>
+                </tr>
+                
+                <tr>
+                  <td>101 ~ 250</td>
+                  <td data-var="contributorsByList.101 ~ 250"></td>
+                </tr>
+                
+                <tr>
+                  <td>251 ~ 1000</td>
+                  <td data-var="contributorsByList.251 ~ 1000"></td>
+                </tr>
   
-              <tr>
-                <td>11 ~ 50</td>
-                <td data-var="contributorsByList.11 ~ 50"></td>
-              </tr>
-              
-              <tr>
-                <td>51 ~ 100</td>
-                <td data-var="contributorsByList.51 ~ 100"></td>
-              </tr>
-              
-              <tr>
-                <td>101 ~ 250</td>
-                <td data-var="contributorsByList.101 ~ 250"></td>
-              </tr>
-              
-              <tr>
-                <td>251 ~ 1000</td>
-                <td data-var="contributorsByList.251 ~ 1000"></td>
-              </tr>
-
-              <tr>
-                <td>> 1000</td>
-                <td data-var="contributorsByList.> 1000"></td>
-              </tr>                
-            </tbody>
-          </table>
-        </section>
-
-        <section>
-          <h2>Quantidade de links ativos por lista</h2>
-
-          <table style="width: 100%">
-            <thead>
-              <tr>
-                <th>Links</th>
-                <th># de Listas</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td data-var="activeLinksByList.1" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>2 ~ 10</td>
-                <td data-var="activeLinksByList.2 ~ 10" data-default="0"></td>
-              </tr>
+                <tr>
+                  <td>> 1000</td>
+                  <td data-var="contributorsByList.> 1000"></td>
+                </tr>                
+              </tbody>
+            </table>
+          </section>
   
-              <tr>
-                <td>11 ~ 50</td>
-                <td data-var="activeLinksByList.11 ~ 50" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>51 ~ 100</td>
-                <td data-var="activeLinksByList.51 ~ 100" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>101 ~ 250</td>
-                <td data-var="activeLinksByList.101 ~ 250" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>251 ~ 1000</td>
-                <td data-var="activeLinksByList.251 ~ 1000" data-default="0"></td>
-              </tr>
-
-              <tr>
-                <td>> 1000</td>
-                <td data-var="activeLinksByList.> 1000" data-default="0"></td>
-              </tr>                
-            </tbody>
-          </table>
-        </section>
-
-        <section>
-          <h2>Quantidade de links removidos por lista</h2>
-
-          <table style="width: 100%">
-            <thead>
-              <tr>
-                <th>Links</th>
-                <th># de Listas</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td data-var="inactiveLinksByList.1" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>2 ~ 10</td>
-                <td data-var="inactiveLinksByList.2 ~ 10" data-default="0"></td>
-              </tr>
+          <section>
+            <h2>Quantidade de links ativos por lista</h2>
   
-              <tr>
-                <td>11 ~ 50</td>
-                <td data-var="inactiveLinksByList.11 ~ 50" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>51 ~ 100</td>
-                <td data-var="inactiveLinksByList.51 ~ 100" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>101 ~ 250</td>
-                <td data-var="inactiveLinksByList.101 ~ 250" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>251 ~ 1000</td>
-                <td data-var="inactiveLinksByList.251 ~ 1000" data-default="0"></td>
-              </tr>
-
-              <tr>
-                <td>> 1000</td>
-                <td data-var="inactiveLinksByList.> 1000" data-default="0"></td>
-              </tr>                
-            </tbody>
-          </table>
-        </section>
-
-        <section>
-          <h2>Sobre usuários</h2>
-        </section>
-
-        <section>
-          <h2>Quantidade de commits por usuário</h2>
-
-          <table style="width: 100%">
-            <thead>
-              <tr>
-                <th>Commits</th>
-                <th># de Usuários</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td data-var="commitsByUser.1" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>2 ~ 10</td>
-                <td data-var="commitsByUser.2 ~ 10" data-default="0"></td>
-              </tr>
+            <table style="width: 100%">
+              <thead>
+                <tr>
+                  <th>Links</th>
+                  <th># de Listas</th>
+                </tr>
+              </thead>
   
-              <tr>
-                <td>11 ~ 50</td>
-                <td data-var="commitsByUser.11 ~ 50" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>51 ~ 100</td>
-                <td data-var="commitsByUser.51 ~ 100" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>101 ~ 250</td>
-                <td data-var="commitsByUser.101 ~ 250" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>251 ~ 1000</td>
-                <td data-var="commitsByUser.251 ~ 1000" data-default="0"></td>
-              </tr>
-
-              <tr>
-                <td>> 1000</td>
-                <td data-var="commitsByUser.> 1000" data-default="0"></td>
-              </tr>                
-            </tbody>
-          </table>
-        </section>
-
-        <section>
-          <h2>Quantidade de links ativos por usuário</h2>
-
-          <table style="width: 100%">
-            <thead>
-              <tr>
-                <th>Links</th>
-                <th># de Usuários</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td data-var="activeLinksByUser.1" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>2 ~ 10</td>
-                <td data-var="activeLinksByUser.2 ~ 10" data-default="0"></td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td data-var="activeLinksByList.1" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>2 ~ 10</td>
+                  <td data-var="activeLinksByList.2 ~ 10" data-default="0"></td>
+                </tr>
+    
+                <tr>
+                  <td>11 ~ 50</td>
+                  <td data-var="activeLinksByList.11 ~ 50" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>51 ~ 100</td>
+                  <td data-var="activeLinksByList.51 ~ 100" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>101 ~ 250</td>
+                  <td data-var="activeLinksByList.101 ~ 250" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>251 ~ 1000</td>
+                  <td data-var="activeLinksByList.251 ~ 1000" data-default="0"></td>
+                </tr>
   
-              <tr>
-                <td>11 ~ 50</td>
-                <td data-var="activeLinksByUser.11 ~ 50" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>51 ~ 100</td>
-                <td data-var="activeLinksByUser.51 ~ 100" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>101 ~ 250</td>
-                <td data-var="activeLinksByUser.101 ~ 250" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>251 ~ 1000</td>
-                <td data-var="activeLinksByUser.251 ~ 1000" data-default="0"></td>
-              </tr>
-
-              <tr>
-                <td>> 1000</td>
-                <td data-var="activeLinksByUser.> 1000" data-default="0"></td>
-              </tr>                
-            </tbody>
-          </table>
-        </section>
-
-        <section>
-          <h2>Quantidade de links removidos por usuário</h2>
-
-          <table style="width: 100%">
-            <thead>
-              <tr>
-                <th>Links</th>
-                <th># de Usuários</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td data-var="inactiveLinksByUser.1" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>2 ~ 10</td>
-                <td data-var="inactiveLinksByUser.2 ~ 10" data-default="0"></td>
-              </tr>
+                <tr>
+                  <td>> 1000</td>
+                  <td data-var="activeLinksByList.> 1000" data-default="0"></td>
+                </tr>                
+              </tbody>
+            </table>
+          </section>
   
-              <tr>
-                <td>11 ~ 50</td>
-                <td data-var="inactiveLinksByUser.11 ~ 50" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>51 ~ 100</td>
-                <td data-var="inactiveLinksByUser.51 ~ 100" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>101 ~ 250</td>
-                <td data-var="inactiveLinksByUser.101 ~ 250" data-default="0"></td>
-              </tr>
-              
-              <tr>
-                <td>251 ~ 1000</td>
-                <td data-var="inactiveLinksByUser.251 ~ 1000" data-default="0"></td>
-              </tr>
-
-              <tr>
-                <td>> 1000</td>
-                <td data-var="inactiveLinksByUser.> 1000" data-default="0"></td>
-              </tr>                
-            </tbody>
-          </table>
+          <section>
+            <h2>Quantidade de links removidos por lista</h2>
+  
+            <table style="width: 100%">
+              <thead>
+                <tr>
+                  <th>Links</th>
+                  <th># de Listas</th>
+                </tr>
+              </thead>
+  
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td data-var="inactiveLinksByList.1" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>2 ~ 10</td>
+                  <td data-var="inactiveLinksByList.2 ~ 10" data-default="0"></td>
+                </tr>
+    
+                <tr>
+                  <td>11 ~ 50</td>
+                  <td data-var="inactiveLinksByList.11 ~ 50" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>51 ~ 100</td>
+                  <td data-var="inactiveLinksByList.51 ~ 100" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>101 ~ 250</td>
+                  <td data-var="inactiveLinksByList.101 ~ 250" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>251 ~ 1000</td>
+                  <td data-var="inactiveLinksByList.251 ~ 1000" data-default="0"></td>
+                </tr>
+  
+                <tr>
+                  <td>> 1000</td>
+                  <td data-var="inactiveLinksByList.> 1000" data-default="0"></td>
+                </tr>                
+              </tbody>
+            </table>
+          </section>
         </section>
 
         <section>
-          <h2>Top Listas</h2>
-        </section>
-
-        <section id="topListByContributors">
-          <div id="topListByContributors-container"></div>
-        </section>
-
-        <section id="topListByCommits">
-          <div id="topListByCommits-container"></div>
-        </section>
-
-        <section id="topListByLinks">
-          <div id="topListByLinks-container"></div>
+          <section>
+            <h2>Sobre usuários</h2>
+          </section>
+  
+          <section>
+            <h2>Quantidade de commits por usuário</h2>
+  
+            <table style="width: 100%">
+              <thead>
+                <tr>
+                  <th>Commits</th>
+                  <th># de Usuários</th>
+                </tr>
+              </thead>
+  
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td data-var="commitsByUser.1" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>2 ~ 10</td>
+                  <td data-var="commitsByUser.2 ~ 10" data-default="0"></td>
+                </tr>
+    
+                <tr>
+                  <td>11 ~ 50</td>
+                  <td data-var="commitsByUser.11 ~ 50" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>51 ~ 100</td>
+                  <td data-var="commitsByUser.51 ~ 100" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>101 ~ 250</td>
+                  <td data-var="commitsByUser.101 ~ 250" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>251 ~ 1000</td>
+                  <td data-var="commitsByUser.251 ~ 1000" data-default="0"></td>
+                </tr>
+  
+                <tr>
+                  <td>> 1000</td>
+                  <td data-var="commitsByUser.> 1000" data-default="0"></td>
+                </tr>                
+              </tbody>
+            </table>
+          </section>
+  
+          <section>
+            <h2>Quantidade de links ativos por usuário</h2>
+  
+            <table style="width: 100%">
+              <thead>
+                <tr>
+                  <th>Links</th>
+                  <th># de Usuários</th>
+                </tr>
+              </thead>
+  
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td data-var="activeLinksByUser.1" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>2 ~ 10</td>
+                  <td data-var="activeLinksByUser.2 ~ 10" data-default="0"></td>
+                </tr>
+    
+                <tr>
+                  <td>11 ~ 50</td>
+                  <td data-var="activeLinksByUser.11 ~ 50" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>51 ~ 100</td>
+                  <td data-var="activeLinksByUser.51 ~ 100" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>101 ~ 250</td>
+                  <td data-var="activeLinksByUser.101 ~ 250" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>251 ~ 1000</td>
+                  <td data-var="activeLinksByUser.251 ~ 1000" data-default="0"></td>
+                </tr>
+  
+                <tr>
+                  <td>> 1000</td>
+                  <td data-var="activeLinksByUser.> 1000" data-default="0"></td>
+                </tr>                
+              </tbody>
+            </table>
+          </section>
+  
+          <section>
+            <h2>Quantidade de links removidos por usuário</h2>
+  
+            <table style="width: 100%">
+              <thead>
+                <tr>
+                  <th>Links</th>
+                  <th># de Usuários</th>
+                </tr>
+              </thead>
+  
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td data-var="inactiveLinksByUser.1" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>2 ~ 10</td>
+                  <td data-var="inactiveLinksByUser.2 ~ 10" data-default="0"></td>
+                </tr>
+    
+                <tr>
+                  <td>11 ~ 50</td>
+                  <td data-var="inactiveLinksByUser.11 ~ 50" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>51 ~ 100</td>
+                  <td data-var="inactiveLinksByUser.51 ~ 100" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>101 ~ 250</td>
+                  <td data-var="inactiveLinksByUser.101 ~ 250" data-default="0"></td>
+                </tr>
+                
+                <tr>
+                  <td>251 ~ 1000</td>
+                  <td data-var="inactiveLinksByUser.251 ~ 1000" data-default="0"></td>
+                </tr>
+  
+                <tr>
+                  <td>> 1000</td>
+                  <td data-var="inactiveLinksByUser.> 1000" data-default="0"></td>
+                </tr>                
+              </tbody>
+            </table>
+          </section>
         </section>
 
         <section>
-          <h2>Top Usuários</h2>
-        </section>
-
-        <section id="topUserByLists">
-          <div id="topUserByLists-container"></div>
-        </section>
-
-        <section id="topUserByCommits">
-          <div id="topUserByCommits-container"></div>
-        </section>
-
-        <section id="topUserByLinks">
-          <div id="topUserByLinks-container"></div>
+          <section>
+            <h2>Top Listas</h2>
+          </section>
+  
+          <section id="topListByContributors">
+            <div id="topListByContributors-container"></div>
+          </section>
+  
+          <section id="topListByCommits">
+            <div id="topListByCommits-container"></div>
+          </section>
+  
+          <section id="topListByLinks">
+            <div id="topListByLinks-container"></div>
+          </section>
         </section>
 
         <section>
-          <h2>Top Links</h2>
+          <section>
+            <h2>Top Usuários</h2>
+          </section>
+  
+          <section id="topUserByLists">
+            <div id="topUserByLists-container"></div>
+          </section>
+  
+          <section id="topUserByCommits">
+            <div id="topUserByCommits-container"></div>
+          </section>
+  
+          <section id="topUserByLinks">
+            <div id="topUserByLinks-container"></div>
+          </section>
         </section>
 
-        <section id="topLink">
-          <div id="topLink-container"></div>
+        <section>
+          <section>
+            <h2>Top Links</h2>
+          </section>
+  
+          <section id="topLink">
+            <div id="topLink-container"></div>
+          </section>
         </section>
         
         <section>
